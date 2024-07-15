@@ -125,16 +125,6 @@ function scrabbleScorer (word) {
 };
 scrabbleScorer(word);
 
-/*function scorerReplacer (array, key, newValue, name) {
-   for (let i = 0; i < array.length; i++) {
-      if (array[i].name === name) {
-         array[i].key = newValue;
-         break;
-      }
-   }
-}
-scorerReplacer(scoringAlgorithms, "scorerFunction", scrabbleScorer, "Scrabble");*/
-
 // Don't write any code below this line //
 // And don't change these or your program will not run as expected //
 module.exports = {
