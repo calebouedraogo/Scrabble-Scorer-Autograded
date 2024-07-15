@@ -90,6 +90,9 @@ function scorerPrompt() {
          console.log(`Score for '${word}': ${scoringAlgorithms[1].scorerFunction(word)}`);
    } else if (selectScoringOption === "2") {
          console.log(scoringAlgorithms[2].scorerFunction(word));
+   } else {
+      console.log(`Invalid Input! Try again\n`);
+      return scorerPrompt(word);
    }
 }
 
