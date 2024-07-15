@@ -43,7 +43,7 @@ function oldScrabbleScorer(word) {
 function simpleScorer(word) {
    word = word.toUpperCase();
    let simpleScore = 0;
-   for (i = 0; i < word.length; i++){
+   for (let i = 0; i < word.length; i++){
       simpleScore++;
    }
    return simpleScore;
@@ -57,7 +57,7 @@ function vowelBonusScorer(word) {
    let wordNumVowels = 0;
    let wordNumConsonants = 0;
 
-   for (i = 0; i < word.length; i++){
+   for (let i = 0; i < word.length; i++){
       if (vowels.includes(word[i])) {
          wordNumVowels++;
       } else if (consonants.includes(word[i])) {
@@ -70,9 +70,9 @@ function vowelBonusScorer(word) {
 vowelBonusScorer(word);
 
 const scoringAlgorithms = [
-   {name: "Simple Score", description: "Each letter is worth 1 point.", scorerFunction: simpleScorer(word)},
-   {name: "Bonus Vowels", description: "Vowels are 3 pts, consonants are 1 pt.", scorerFunction: vowelBonusScorer(word)},
-   {name: "SCrabble", description: "The traditional scoring algorithm.", scorerFunction: oldScrabbleScorer(word)}
+  {name: "Simple Score", description: "Each letter is worth 1 point.", scorerFunction: simpleScorer},
+  {name: "Bonus Vowels", description: "Vowels are 3 pts, consonants are 1 pt.", scorerFunction: vowelBonusScorer},
+  {name: "SCrabble", description: "The traditional scoring algorithm.", scorerFunction: scrabbleScorer}
 ];
 
 function scorerPrompt() {
@@ -85,11 +85,11 @@ function scorerPrompt() {
    let selectScoringOption = input.question("Enter 0, 1, or 2: ");
 
    if (selectScoringOption === "0") {
-      console.log(`Score for '${word}': ${simpleScorer(word)}`);
+      console.log(`Score for '${word}': ${scoringAlgorithms[0].scorerFunction(word)}`);
    } else if (selectScoringOption === "1") {
-         console.log(`Score for '${word}': ${vowelBonusScorer(word)}`);
+         console.log(`Score for '${word}': ${scoringAlgorithms[1].scorerFunction(word)}`);
    } else if (selectScoringOption === "2") {
-         console.log(oldScrabbleScorer(word));
+         console.log(scoringAlgorithms[2].scorerFunction(word));
    }
 }
 
@@ -98,11 +98,42 @@ function runProgram() {
    scorerPrompt();
 }
 
-let newPointStructure;
+function transform(oldPointStructure) {
+   let newObject = {};
+   for (let item in oldPointStructure) {
+      for (i = 0; i < oldPointStructure[item].length; i++) {
+         newObject[oldPointStructure[item][i].toLowerCase()] = Number(item);
+      }
+   }
+   return newObject;
+}
+transform(oldPointStructure);
 
-let scrabbleScorer;
+let newPointStructure = transform(oldPointStructure);
 
-function transform() {};
+function scrabbleScorer (word) {
+   word = word.toLowerCase();
+   let newScore = 0;
+   for (let i = 0; i < word.length; i++) {
+      for (let keys in newPointStructure) {
+         if (keys.includes(word[i])) {
+      newScore += newPointStructure[keys];
+         }
+      }
+   }
+   return newScore;
+};
+scrabbleScorer(word);
+
+/*function scorerReplacer (array, key, newValue, name) {
+   for (let i = 0; i < array.length; i++) {
+      if (array[i].name === name) {
+         array[i].key = newValue;
+         break;
+      }
+   }
+}
+scorerReplacer(scoringAlgorithms, "scorerFunction", scrabbleScorer, "Scrabble");*/
 
 // Don't write any code below this line //
 // And don't change these or your program will not run as expected //
