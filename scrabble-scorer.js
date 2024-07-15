@@ -40,18 +40,17 @@ function oldScrabbleScorer(word) {
 // your job is to finish writing these functions and variables that we've named //
 // don't change the names or your program won't work as expected. //
 
-let simpleScorer = 0;
-function simpleScorerFunc(word) {
+function simpleScorer(word) {
    word = word.toUpperCase();
+   let simpleScore = 0;
    for (i = 0; i < word.length; i++){
-      simpleScorer++;
+      simpleScore++;
    }
-   return simpleScorer;
+   return simpleScore;
 }
-simpleScorerFunc(word);
+simpleScorer(word);
 
-let vowelBonusScorer = 0;
-function vowelBonusScorerFunc(word) {
+function vowelBonusScorer(word) {
    word = word.toUpperCase();
    let vowels = 'AEIOU';
    let consonants = 'BCDFGHJKLMNPQRSTVWXYZ'
@@ -65,49 +64,30 @@ function vowelBonusScorerFunc(word) {
          wordNumConsonants++;
       }  
    }
-   vowelBonusScorer = (wordNumVowels * 3) + (wordNumConsonants * 1);
-   return vowelBonusScorer;
+   let vowelBonusScore = (wordNumVowels * 3) + (wordNumConsonants * 1);
+   return vowelBonusScore;
 }
-vowelBonusScorerFunc(word);
+vowelBonusScorer(word);
 
-const scoringAlgorithms = [];
+const scoringAlgorithms = [
+   {name: "Simple Score", description: "Each letter is worth 1 point.", scorerFunction: simpleScorer(word)},
+   {name: "Bonus Vowels", description: "Vowels are 3 pts, consonants are 1 pt.", scorerFunction: vowelBonusScorer(word)},
+   {name: "SCrabble", description: "The traditional scoring algorithm.", scorerFunction: oldScrabbleScorer(word)}
+];
 
-let scoringOptionsOne = {
-   name: "Simple Score",
-   description: "Each letter is worth 1 point.",
-   scorerFunction: simpleScorerFunc(word)
-};
-
-let scoringOptionsTwo = {
-   name: "Bonus Vowels",
-   description: "Vowels are 3 pts, consonants are 1 pt.",
-   scorerFunction: vowelBonusScorerFunc(word)
-};
-
-let scoringOptionsThree = {
-   name: "SCrabble",
-   description: "The traditional scoring algorithm.",
-   scorerFunction: oldScrabbleScorer(word)
-};
-
-scoringAlgorithms.push(scoringOptionsOne);
-scoringAlgorithms.push(scoringOptionsTwo);
-scoringAlgorithms.push(scoringOptionsThree);
-
-let selectScoringOption = "";
 function scorerPrompt() {
    console.log("Which scoring algorithm would you like to use?");
    console.log(`
-0 - ${scoringOptionsOne.name}: ${scoringOptionsOne.description}\n
-1 - ${scoringOptionsTwo.name}: ${scoringOptionsTwo.description}\n
-2 - ${scoringOptionsThree.name}: ${scoringOptionsThree.description}
+0 - ${scoringAlgorithms[0].name}: ${scoringAlgorithms[0].description}\n
+1 - ${scoringAlgorithms[1].name}: ${scoringAlgorithms[1].description}\n
+2 - ${scoringAlgorithms[2].name}: ${scoringAlgorithms[2].description}
 `);
-   selectScoringOption = input.question("Enter 0, 1, or 2: ");
+   let selectScoringOption = input.question("Enter 0, 1, or 2: ");
 
    if (selectScoringOption === "0") {
-      console.log(`Score for '${word}': ${simpleScorerFunc(word)}`);
+      console.log(`Score for '${word}': ${simpleScorer(word)}`);
    } else if (selectScoringOption === "1") {
-         console.log(`Score for '${word}': ${vowelBonusScorerFunc(word)}`);
+         console.log(`Score for '${word}': ${vowelBonusScorer(word)}`);
    } else if (selectScoringOption === "2") {
          console.log(oldScrabbleScorer(word));
    }
